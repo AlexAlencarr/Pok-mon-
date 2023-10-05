@@ -41,6 +41,9 @@ const loop = setInterval(() => {
         ultraball.style.animation = 'none';
         ultraball.style.left = `${ultraballPosition}px`;
 
+        masterball.style.animation = 'none';
+        masterball.style.left = `${masterballPosition}px`;
+
         pikachu.style.animation = 'none';
         pikachu.style.bottom = `${pikachuPosition}px`
 
