@@ -91,3 +91,15 @@ document.addEventListener("keydown", function(press) {
 
 //CÓDIGO PARA O POKÉMON REALIZAR A MECÂNICA DE PULO
 document.addEventListener('keydown', jump);
+
+//CASO SEJA APERTADO O "F5" VOLTA PARA A TELA DA CAPA DO JOGO
+document.addEventListener('keydown', function(press){
+    if (press.key === "F5"){
+        window.location.href = "telainicial.html"
+    }
+})
+
+//FUNÇAO PARA SAIR DA CAPA DO JOGO E IR PARA O JOGO
+function Iniciar(){ 
+    window.location.href = "index.html";
+}
