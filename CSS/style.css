@@ -44,7 +44,7 @@ body{
     /* right: 55px; */
     width: 28px;
 
-    animation: girar 1.5s linear infinite;
+    animation: turn 1.5s linear infinite;
 }
 
 .ultraball{
@@ -54,7 +54,7 @@ body{
 
     width: 20px;
 
-    /* animation: girar 1s linear infinite; */
+    /* animation: turn 1s linear infinite; */
     border-radius: 50%;
 }
 
@@ -65,7 +65,7 @@ body{
 
     width: 20px;
 
-    /* animation: girar 0.6s linear infinite; */
+    /* animation: turn 0.6s linear infinite; */
     border-radius: 50%;
 }
 
@@ -124,7 +124,7 @@ body{
 
 }
 
-@keyframes girar {
+@keyframes turn {
     100%{
         transform: rotate(360deg);
     }

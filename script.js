@@ -66,13 +66,13 @@ const loop = setInterval(() => {
             //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
             pokeball.style.animation = 'none';
             pokeball.style.visibility = 'hidden';
-            ultraball.style.animation = 'girar 1s linear infinite';
+            ultraball.style.animation = 'turn 1s linear infinite';
             ultraball.style.visibility = 'visible';
         } else if(score > 30){
             //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
             ultraball.style.animation = 'none';
             ultraball.style.visibility = 'hidden';
-            masterball.style.animation = 'girar 0.7s linear infinite';
+            masterball.style.animation = 'turn 0.7s linear infinite';
             masterball.style.visibility = 'visible';
         }
     }, 10);
@@ -96,11 +96,11 @@ document.addEventListener('keydown', jump);
 //CASO SEJA APERTADO O "F5" VOLTA PARA A TELA DA CAPA DO JOGO
 document.addEventListener('keydown', function(press){
     if (press.key === "F5"){
-        window.location.href = "telainicial.html"
+        window.location.href = "index.html"
     }
 })
 
 //FUNÇAO PARA SAIR DA CAPA DO JOGO E IR PARA O JOGO
-function Iniciar(){ 
-    window.location.href = "index.html";
+function start(){ 
+    window.location.href = "game.html";
 }
