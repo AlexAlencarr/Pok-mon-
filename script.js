@@ -29,7 +29,7 @@ const loop = setInterval(() => {
         gameOver.innerHTML = 'Score: ' + score;
         clearInterval(scoreCounter);
         console.log(score)
-    }, 996);
+    }, 1000);
     const colisao = setInterval(() => {
         //CONSTANTES COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DAS POKEBOLAS EM RELAÇÃO AO LADO ESQUERDO DA TELA
         const pokeballPosition = pokeball.offsetLeft;
@@ -75,7 +75,7 @@ const loop = setInterval(() => {
             masterball.style.animation = 'girar 0.7s linear infinite';
             masterball.style.visibility = 'visible';
         }
-    }, 6);
+    }, 10);
 }, 1000)
 
 //CÓDIGO IMPLEMENTADO COM O OBJETIVO DE REINICIAR O JOGO
