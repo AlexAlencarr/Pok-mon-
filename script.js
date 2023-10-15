@@ -33,7 +33,9 @@ const colisao = () => {
     //CONSTANTE COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DO POKÉMON EM RELAÇÃO À PARTE INFERIOR
     const pikachuPosition = +window.getComputedStyle(pikachu).bottom.replace('px','');
 
-    if(score > 10 && score < 30){
+    
+
+    /*if(score > 10 && score < 30){
         //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
         pokeball.style.animation = 'none';
         pokeball.style.visibility = 'hidden';
@@ -45,11 +47,14 @@ const colisao = () => {
         ultraball.style.visibility = 'hidden';
         masterball.style.animation = 'turn 0.7s linear infinite';
         masterball.style.visibility = 'visible';
-    }
+    }*/
+   
+
     //ESSA CONDIÇÃO TESTARÁ SE A POKEBOLA ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À ESQUERDA E SE O POKÉMON ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À PARTE INFERIOR DA TELA
     //CASO A POKEBOLA ESTEJA A 510 PIXELS DA ESQUERDA E, SIMULTANEAMENTE, O PIKACHU ESTEJA A MENOS QUE 20 PIXELS DO CHÃO, O JOGO SERÁ INTERROMPIDO
     if ((pokeballPosition >= 510 && pikachuPosition <= 20) || (ultraballPosition >= 510 && pikachuPosition <= 20) || (masterballPosition >= 510 && pikachuPosition <= 20)) {
-        clearTimeout(colisao)  
+        clearTimeout(colisao) 
+        clearTimeout(switchballs) 
         //LINHAS DE CÓDIGO PARA TROCAR O GIF DO POKÉMON CORRENDO PELA IMAGEM DO POKÉMON MORTO E AJUSTAR O TAMANHO DA IMAGEM
         pikachu.src = './Images/pikachuDead.png';
         pikachu.style.width = '80px';        
@@ -67,11 +72,33 @@ const colisao = () => {
         //CÓDIGO PARA TORNAR VISÍVEL O BOTÃO DE REINICIAR O JOGO
         restartButton.style.visibility = 'visible';
     } else {
-        score += 0.01;
+        score += 0.09;
         gameOver.innerHTML = 'Score: ' + Math.trunc(score);
-        setTimeout(colisao, 7)
+
+        //LISTA COM AS CARACTERÍSTICAS DE CADA POKEBOLA
+        const balls = [pokeball, ultraball, masterball]
+
+        //CONFERE QUAL NÃO ESTÁ ESCONDIDA
+        const visible = balls.filter((x) => x.style.visibility != "hidden")
+        console.log(visible)
+
+        const switchballs = () =>{
+            //COPIA A LISTA BALLS
+            const newballs = balls.map((x)=>x)
+
+            //PEGA O NOME DO ELEMENTO ÚNICO DA LISTA "VISIBLE" E PUXA A POSIÇÃO DO TERMO DE MESMO NOME NA CÓPIA DA LISTA "BALLS"
+            const visiblepos = newballs.findIndex((x)=>`${visible[0]}`)
+            newballs[visiblepos].style.visibility = "hidden"//DESABILITA A VISUALIZAÇÃO DA BOLA ATUAL
+            newballs[visiblepos].style.animation = "none"//DESABILITA A ANIMAÇÃO DA BOLA ATUAL
+            newballs[Math.floor(Math.random() * (newballs.length-1))].style.visibility = "visible"//DEVERIA SELECIONAR UMA DAS 3 POKEBOLAS E TORNA-LA VISIVEL
+            newballs[Math.floor(Math.random() * (newballs.length-1))].style.animation = "turn 1s linear infinite"//DEVERIA SELECIONAR UMA DAS 3 POKEBOLAS E ATIVAR SUA ANIMAÇÃO
+        
+        }
+        if (score >=10){setTimeout(switchballs, 5000)} //SE A PONTUAÇÃO FOR MAIOR QUE DEZ EXECUTE A TROCA DE POKEBOLAS DEPOIS DE 5 SEGUNDOS
+        setTimeout(colisao, 10)
     }
 }
+
 
 
 //CÓDIGO IMPLEMENTADO COM O OBJETIVO DE REINICIAR O JOGO
@@ -98,6 +125,9 @@ document.addEventListener('keydown', function(press){
 })
 
 //FUNÇAO PARA SAIR DA CAPA DO JOGO E IR PARA O JOGO
-function start(){ 
+const start = () => { 
     window.location.href = "game.html";
 }
+
+
+
