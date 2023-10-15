@@ -21,67 +21,64 @@ const jump = () => {
     }, 500);
 }
 
+
 //CÓDIGO PRINCIPAL PARA O MECANISMO DO JOGO, NELE ESTÁ ARMAZENADO AS INFORMAÇÕES SOBRE O SCORE, AS POSIÇÕES RELATIVAS ÀS POKEBOLAS, A POSIÇÃO DO PIKACHU, ALÉM DO GERENCIAMENTO DAS ANIMAÇÕES DA TELA DO JOGO
-const loop = setInterval(() => {
-    //CÓDIGO EM QUE SERÁ GERADA A PONTUAÇÃO A SER VISUALIZADA NO CANTO SUPERIOR DIREITO DA TELA DO JOGO
-    const scoreCounter = setInterval(() => {
-        score += 1;
-        gameOver.innerHTML = 'Score: ' + score;
-        clearInterval(scoreCounter);
-        console.log(score)
-    }, 1000);
-    const colisao = setInterval(() => {
-        //CONSTANTES COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DAS POKEBOLAS EM RELAÇÃO AO LADO ESQUERDO DA TELA
-        const pokeballPosition = pokeball.offsetLeft;
-        const ultraballPosition = ultraball.offsetLeft;
-        const masterballPosition = masterball.offsetLeft;
 
-        //CONSTANTE COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DO POKÉMON EM RELAÇÃO À PARTE INFERIOR
-        const pikachuPosition = +window.getComputedStyle(pikachu).bottom.replace('px','');
+const colisao = () => {
+    //CONSTANTES COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DAS POKEBOLAS EM RELAÇÃO AO LADO ESQUERDO DA TELA
+    const pokeballPosition = pokeball.offsetLeft;
+    const ultraballPosition = ultraball.offsetLeft;
+    const masterballPosition = masterball.offsetLeft;
 
-        //ESSA CONDIÇÃO TESTARÁ SE A POKEBOLA ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À ESQUERDA E SE O POKÉMON ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À PARTE INFERIOR DA TELA
-        //CASO A POKEBOLA ESTEJA A 510 PIXELS DA ESQUERDA E, SIMULTANEAMENTE, O PIKACHU ESTEJA A MENOS QUE 20 PIXELS DO CHÃO, O JOGO SERÁ INTERROMPIDO
-        if ((pokeballPosition >= 510 && pikachuPosition < 20) || (ultraballPosition >= 510 && pikachuPosition < 20) || (masterballPosition >= 510 && pikachuPosition < 20)) {
-            //LINHAS DE CÓDIGO CRIADAS COM O OBJETIVO DE PARAR A ANIMAÇÃO DA POKEBOLA E FIXÁ-LA NA POSIÇÃO EM QUE TOCOU NO POKÉMON, VARIANDO CONFORME O TIPO DA POKEBOLA
-            pokeball.style.animation = 'none';
-            pokeball.style.left = `${pokeballPosition}px`;
-            ultraball.style.animation = 'none';
-            ultraball.style.left = `${ultraballPosition}px`;
-            masterball.style.animation = 'none';
-            masterball.style.left = `${masterballPosition}px`;
+    //CONSTANTE COM O INTUITO DE ARMAZENAR A POSIÇÃO RELATIVA DO POKÉMON EM RELAÇÃO À PARTE INFERIOR
+    const pikachuPosition = +window.getComputedStyle(pikachu).bottom.replace('px','');
 
-            //LINHAS DE CÓDIGO PARA DESATIVAR A ANIMAÇÃO DO POKÉMON E FIXÁ-LO NA POSIÇÃO EM QUE TOCOU NA POKEBOLA
-            pikachu.style.animation = 'none';
-            pikachu.style.bottom = `${pikachuPosition}px`
+    if(score > 10 && score < 30){
+        //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
+        pokeball.style.animation = 'none';
+        pokeball.style.visibility = 'hidden';
+        ultraball.style.animation = 'turn 1s linear infinite';
+        ultraball.style.visibility = 'visible';
+    } else if(score > 30){
+        //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
+        ultraball.style.animation = 'none';
+        ultraball.style.visibility = 'hidden';
+        masterball.style.animation = 'turn 0.7s linear infinite';
+        masterball.style.visibility = 'visible';
+    }
+    //ESSA CONDIÇÃO TESTARÁ SE A POKEBOLA ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À ESQUERDA E SE O POKÉMON ESTÁ A UMA DETERMINADA POSIÇÃO EM RELAÇÃO À PARTE INFERIOR DA TELA
+    //CASO A POKEBOLA ESTEJA A 510 PIXELS DA ESQUERDA E, SIMULTANEAMENTE, O PIKACHU ESTEJA A MENOS QUE 20 PIXELS DO CHÃO, O JOGO SERÁ INTERROMPIDO
+    if ((pokeballPosition >= 510 && pikachuPosition <= 20) || (ultraballPosition >= 510 && pikachuPosition <= 20) || (masterballPosition >= 510 && pikachuPosition <= 20)) {
+        clearTimeout(colisao)  
+        //LINHAS DE CÓDIGO PARA TROCAR O GIF DO POKÉMON CORRENDO PELA IMAGEM DO POKÉMON MORTO E AJUSTAR O TAMANHO DA IMAGEM
+        pikachu.src = './Images/pikachuDead.png';
+        pikachu.style.width = '80px';        
+        //LINHAS DE CÓDIGO PARA DESATIVAR A ANIMAÇÃO DO POKÉMON E FIXÁ-LO NA POSIÇÃO EM QUE TOCOU NA POKEBOLA
+        pikachu.style.animation = 'none';
+        pikachu.style.bottom = `${pikachuPosition}px`
+        //LINHAS DE CÓDIGO CRIADAS COM O OBJETIVO DE PARAR A ANIMAÇÃO DA POKEBOLA E FIXÁ-LA NA POSIÇÃO EM QUE TOCOU NO POKÉMON, VARIANDO CONFORME O TIPO DA POKEBOLA
+        pokeball.style.animation = 'none';
+        pokeball.style.left = `${pokeballPosition}px`;
+        ultraball.style.animation = 'none';
+        ultraball.style.left = `${ultraballPosition}px`;
+        masterball.style.animation = 'none';
+        masterball.style.left = `${masterballPosition}px`;
+    
+        //CÓDIGO PARA TORNAR VISÍVEL O BOTÃO DE REINICIAR O JOGO
+        restartButton.style.visibility = 'visible';
+    } else {
+        score += 0.01;
+        gameOver.innerHTML = 'Score: ' + Math.trunc(score);
+        setTimeout(colisao, 7)
+    }
+}
 
-            //LINHAS DE CÓDIGO PARA TROCAR O GIF DO POKÉMON CORRENDO PELA IMAGEM DO POKÉMON MORTO E AJUSTAR O TAMANHO DA IMAGEM
-            pikachu.src = './Images/pikachuDead.png';
-            pikachu.style.width = '85px';
-        
-            //CÓDIGO PARA TORNAR VISÍVEL O BOTÃO DE REINICIAR O JOGO
-            restartButton.style.visibility = 'visible';
-
-            clearInterval(loop);
-        } else if(score > 10 && score < 30){
-            //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
-            pokeball.style.animation = 'none';
-            pokeball.style.visibility = 'hidden';
-            ultraball.style.animation = 'turn 1s linear infinite';
-            ultraball.style.visibility = 'visible';
-        } else if(score > 30){
-            //LINHAS DE CÓDIGO COM O OBJETIVO DE DESATIVAR A POKEBOLA ATUAL E SUBSTUIR PELA SUBSEQUENTE
-            ultraball.style.animation = 'none';
-            ultraball.style.visibility = 'hidden';
-            masterball.style.animation = 'turn 0.7s linear infinite';
-            masterball.style.visibility = 'visible';
-        }
-    }, 10);
-}, 1000)
 
 //CÓDIGO IMPLEMENTADO COM O OBJETIVO DE REINICIAR O JOGO
 const restartGame = () =>{
     window.location.reload();
 }
+
 
 //CÓDIGO PARA DESATIVAR AS TECLAS ALT E F12
 document.addEventListener("keydown", function(press) {
